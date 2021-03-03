@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import styled from "styled-components";
+import styled, {keyframes} from "styled-components";
 import TextField from '@material-ui/core/TextField';
 import Collapse from '@material-ui/core/Collapse';
 import moment from "moment"
@@ -99,8 +99,8 @@ function Home() {
             <ListContainer>
                 {remaining !== -1 && <>{remaining}{" searches remaining"}</>}
                 {questions.map((question, index) => <div style={{width: "100%"}} key={index}>
-                        <ListItem question={question} index={index} title={question.title}>
-                        </ListItem>
+                        <ListItem question={question} index={index} title={question.title}/>
+                        <hr/>
                     </div>
                 )
                 }
@@ -112,9 +112,10 @@ function Home() {
 const ListItemDiv = styled.div`
     display: flex;    
     width:100%
-    margin: 15px;
+    margin: 35px;
     padding:10px;
-    margin-left: 100px;
+    box-shadow: 0px 0px 5px black;
+
 `
 const Details = styled.div`
      display:flex;
@@ -135,7 +136,6 @@ const QuestionTitle = styled.h2`
 const DetailsContainer = styled.div`
      display:flex;
     flex-direction:column;       
-    border: 1px solid gray;
     padding:10px;
     width:80%;
     overflow:auto;
@@ -147,8 +147,11 @@ const TitleSection = styled.div`
 const Answer = styled.div`
     background: white;
     padding-left:5px;
-    box-shadow: 0px 0px 3px black;
+    box-shadow: 0px 0px 3px gray;
     margin-left:15px;
+    border-radius:10px;
+    margin-top:20px;
+    overflow:auto;
     :hover{
         box-shadow: 0px 0px 10px black;
     }
@@ -156,9 +159,13 @@ const Answer = styled.div`
 const AnswerComment = styled.div`
     margin-left: 20px;
     margin-top: 2px;
+    margin-bottom: 5px;
     background: white;
     box-shadow: 0px 0px 3px black;
     padding: 5px;
+    border-radius:5px;
+    overflow:auto;  
+
     :hover{
         box-shadow: 0px 0px 10px red;
     }
@@ -210,6 +217,24 @@ function ListItem(props) {
                 <Collapse in={show}>
                     <div style={{textAlign: 'left'}}>
                        {props.question.body && <><InnerHTML html={props.question.body}/></>}
+                        {props.question.comments && <>
+                            <>COMMENTS ({props.question.comments.length}):</>
+                            <Button
+                                style={{background: "black", color: "white", margin: "10px"}}
+                                onClick={handleShowComment}>{!showComment ? "SHOW" : "HIDE"}</Button>
+                            <Collapse in={showComment}>
+                                {props.question.comments.map((comments, i) => <QuestionComment>
+                                        ({i+1})
+                                        <TitleSection style={{marginLeft: "auto"}}>
+                                            <BoldDiv>{"Date Created: "}{moment.unix(comments.creation_date).format("DD-MM-YYYY")}</BoldDiv>
+                                            <BoldDiv>{"Votes: "}{comments.score}</BoldDiv>
+                                        </TitleSection>
+                                        <InnerHTML html={comments.body}/>
+                                    </QuestionComment>
+                                )
+                                }
+                            </Collapse>
+                        </>}
                         {props.question.answers && <>
                             <>ANSWERS ({props.question.answers.length}):</>
                             <Button style={{background: "black", color: "white", marginLeft: "10px"}}
@@ -234,24 +259,6 @@ function ListItem(props) {
                                                 )}</>
                                             : ""}</>
                                     </Answer>
-                                )
-                                }
-                            </Collapse>
-                        </>}
-                        {props.question.comments && <>
-                            <>COMMENTS ({props.question.comments.length}):</>
-                            <Button
-                                style={{background: "black", color: "white", margin: "10px"}}
-                                onClick={handleShowComment}>{!showComment ? "SHOW" : "HIDE"}</Button>
-                            <Collapse in={showComment}>
-                                {props.question.comments.map((comments, i) => <QuestionComment>
-                                        ({i+1})
-                                        <TitleSection style={{marginLeft: "auto"}}>
-                                            <BoldDiv>{"Date Created: "}{moment.unix(comments.creation_date).format("DD-MM-YYYY")}</BoldDiv>
-                                            <BoldDiv>{"Votes: "}{comments.score}</BoldDiv>
-                                        </TitleSection>
-                                        <InnerHTML html={comments.body}/>
-                                    </QuestionComment>
                                 )
                                 }
                             </Collapse>
