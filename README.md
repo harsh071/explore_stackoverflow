@@ -23,4 +23,4 @@ To search for a tag in stackoverflow enter the tag on the search bar and click o
 `docker run -it -p 3000:3000 harsh071/comp4350_assignment`
 
 
-### Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Open [http://localhost:3000](http://localhost:3000) to view it in the browser once it is running.
