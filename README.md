@@ -1,5 +1,5 @@
 ## DESCRIPTION
-As a user, I can input a tag T in a textbox and click search button, the web application shall extract from stackoverflow.com the 10 newest questions, as well as the 10 most voted related questions posted in the past week related to tag T as one merged list sorted based on their creation day in descending order. 
+A user can input a tag T in the textbox and click search button, the web application shall extract from stackoverflow.com the 10 newest questions, as well as the 10 most voted related questions posted in the past week related to tag T as one merged list sorted based on their creation day in descending order. 
 
 In the project directory, you can run:
 ### `npm start`
