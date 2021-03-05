@@ -1,9 +1,13 @@
-In the project directory, you can run:
+## DESCRIPTION
+As a user, I can input a tag T in a textbox and click search button, the web application shall extract from stackoverflow.com the 10 newest questions, as well as the 10 most voted related questions posted in the past week related to tag T as one merged list sorted based on their creation day in descending order. 
 
+In the project directory, you can run:
 ### `npm start`
 
-Runs the app in the development mode.\
+Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+To search for a tag in stackoverflow enter the tag on the search bar and click on search. 
 
 ### Running the Docker Container:
 
