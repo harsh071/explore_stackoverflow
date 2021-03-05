@@ -6,7 +6,7 @@ import moment from "moment"
 import Button from '@material-ui/core/Button';
 import axios from "axios";
 import InnerHTML from "dangerously-set-inner-html/index";
-
+/*COMPONENTS THAT ARE DISPLAYED FOR THE PAGE */
 const HomeContainer = styled.div`
     display:flex;
     flex-direction: column;
@@ -42,7 +42,7 @@ const Title = styled.h1`
     color:#EF8236;
     text-decoration: underline;
 `
-
+// render Home page.
 function Home() {
     let [tagged, setTagged] = useState("")
     let [remaining, setRemaining] = useState(-1)
@@ -52,9 +52,10 @@ function Home() {
         setTagged(input.target.value)
     }
     const handleSearch = () => {
+        //Get the date for a week.
         let dateTo = moment().format('YYYY-MM-DD hh:mm:ss');
         let dateFrom = moment().subtract(7, 'd').format('YYYY-MM-DD hh:mm:ss');
-
+        // Get the data from the API and sort.
         axios.get(
             `https://api.stackexchange.com/2.2/questions?pagesize=10&fromdate=${dateFrom}&todate=${dateTo}&order=desc&sort=creation&tagged=${tagged}&site=stackoverflow&filter=!*PBQNA2D-Y)jggiwb8s1L)bS3FX1MjsI4j0vFNb7pCMhx39lT`
         )
@@ -66,6 +67,7 @@ function Home() {
                     )
                         .then((inner_response) => {
                                 list_of_questions = list_of_questions.concat(inner_response.data.items)
+                                //Merging and sorting the list.
                                 list_of_questions.sort(
                                     (a, b) => {
                                         return b.creation_date - a.creation_date
@@ -78,14 +80,8 @@ function Home() {
                         ).catch((error) => {window.alert("ERROR OCCURED RETRY..."); console.log(error)})
                 }
             ).catch((error) => {window.alert("ERROR OCCURED RETRY..."); console.log(error)})
-
-
     }
-
-    useEffect(() => {
-        }, []
-    )
-
+    // UI
     return (
         <HomeContainer>
             <Title>EXPLORE STACKOVERFLOW</Title>
@@ -97,6 +93,7 @@ function Home() {
                 >Search</Button>
             </SearchContainer>
             <ListContainer>
+                {/*SHOW LIST OF THE QUESTIONS*/}
                 {remaining !== -1 && <>{remaining}{" searches remaining"}</>}
                 {questions.map((question, index) => <div style={{width: "100%"}} key={index}>
                         <ListItem question={question} index={index} title={question.title}/>
@@ -108,7 +105,7 @@ function Home() {
         </HomeContainer>
     );
 }
-
+// QUESTIONS UI COMPONENETS.
 const ListItemDiv = styled.div`
     display: flex;    
     width:100%
@@ -185,7 +182,7 @@ const QuestionIdButton = styled.div`
 const NormalDiv = styled.div`
     font-weight: 400;
 `
-
+// UI FOR THE QUESTION LIST ITEM
 function ListItem(props) {
     let [show, setShow] = useState(false);
     let [showAnswer, setShowAnswer] = useState(false);
@@ -199,7 +196,6 @@ function ListItem(props) {
     const handleShowComment = () => {
         setShowComment(!showComment)
     }
-    // console.log(props)
     return (
         <ListItemDiv>
             <DetailsContainer>
@@ -216,7 +212,9 @@ function ListItem(props) {
                 </QuestionTitle>
                 <Collapse in={show}>
                     <div style={{textAlign: 'left'}}>
+                       {/* QUESTION BODY*/}
                        {props.question.body && <><InnerHTML html={props.question.body}/></>}
+                        {/*COMMENTS*/}
                         {props.question.comments && <>
                             <>COMMENTS ({props.question.comments.length}):</>
                             <Button
@@ -236,6 +234,7 @@ function ListItem(props) {
                             </Collapse>
                         </>}
                         {props.question.answers && <>
+                            {/*ANSWERS FOR THE QUESTION*/}
                             <>ANSWERS ({props.question.answers.length}):</>
                             <Button style={{background: "black", color: "white", marginLeft: "10px"}}
                                     onClick={handleShowAnswer}>{!showAnswer ? "SHOW" : "HIDE"}</Button>
@@ -247,6 +246,7 @@ function ListItem(props) {
                                         </TitleSection><InnerHTML html={answer.body}/>
                                         <>{answer.comments ?
                                             <>
+                                                {/*ANSWER COMMENTS.*/}
                                                 <BoldDiv>COMMENTS:</BoldDiv>
                                                 {answer.comments.map((comments, i) => <AnswerComment>
                                                         ({i+1})
