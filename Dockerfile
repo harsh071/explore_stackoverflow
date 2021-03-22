@@ -2,7 +2,7 @@
 FROM node:alpine
 
 # set working directory
-WORKDIR '/app'
+WORKDIR /app
 
 
 # install app dependencies
